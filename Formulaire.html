@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Connexion</title>
+</head>
+<body>
+<p id="result"></p>
+<form action="#" >
+    <p>
+        Pseudo <br><input type="text"  id="id"/><br>
+        Mot de passe<br> <input type="password" id="mdp" name="mot_de_passe" /><br>
+        <br>
+        <input type="submit" id="valid" value="Valider" />
+    </p>
+
+</form>
+<script>
+    let resultat="";
+    $.getJSON("http://iutbelfort.ltg-services.fr/getToken",function (data) {
+        resultat=data.token;
+
+    });
+
+    $("#valid").click(function () {
+        console.log(resultat);
+        $.post("http://iutbelfort.ltg-services.fr/login",{identifiant:$("#id").val(), password: $("#mdp").val(),token: resultat},function (data) {
+            console.log(data[0]);
+            if(data[0].status == 'success'){
+                $("#result").html("<p> Hello</p>");
+            }else{
+                $("#result").html("<p>pas hello</p>");
+            }
+        })
+    })
+
+    $.post("http://iutbelfort.ltg-services.fr/login",{identifiant:"demo", password: "Demo2019%",token: "e80c262289c088bd01816ee1b55830b6b6aa65ac"},function (data) {
+        console.log(data)
+    })
+
+
+
+</script>
+</body>
+</html>
